@@ -1,13 +1,17 @@
 %Dostane sudoku v podobě seznamu čísel po jednotlivých řádcích
-%Vrátí seznam čísel po řádcích vyřešeného sudoku
+%Vypíše seznamy čísel po řádcích vyřešeného sudoku
 %změní čísla/proměnné na celé šuplíky s souřadnicemi a možnostmi (change)
 %rozdělí do šuplíků podle počtu možností(sortToPackages), poté aplikuje 
 %nejnižší neprázdný šuplík dokud sudoku není vyřešené(applyOnesOnAll), nakonec výsledek seřadí 
 %dle souřadnic(myMergeSort) a odstraní souřadnice
-start(X,Done) :- change(0,X,Y),
+start(X) :- change(0,X,Y),
     sortToPackages(Y,DoneM,[],One,[],Two,[],Three,[],Four,[],Five,[],Six,[],Seven,[],Eight,[],Nine,[]),
     applyOnesOnAll(DoneM,DoneUnsorted,One,[],Two,[],Three,[],Four,[],Five,[],Six,[],Seven,[],Eight,[],Nine,[]),
-    myMergeSort(DoneUnsorted,DoneWithCoordinates),removeCoordinates(DoneWithCoordinates,Done).
+    myMergeSort(DoneUnsorted,DoneWithCoordinates),removeCoordinates(DoneWithCoordinates,Done),mformat(Done).
+
+%dostane seznam a vypíše na výstup 9 seznamů po devíti prvcích - udělá ze seznamu matici.
+mformat([]).
+mformat([A,B,C,D,E,F,G,H,I|Original]) :- write([A,B,C,D,E,F,G,H,I]),nl(),mformat(Original).
 
 %dostane seznam políček s souřadnicemi a vrátí seznam pouze hodnot
 removeCoordinates([],[]).
@@ -169,3 +173,4 @@ deleteOnePossibility(R1,C1,S1,_,R/C/S-X,R/C/S-X) :- R1 \= R,C1 \= C, S1 \= S.
 deleteElement([],_,[]).
 deleteElement([V|Rest],V,Y) :- deleteElement(Rest,V,Y).
 deleteElement([X|Rest],V,[X|Y]) :- X \= V,deleteElement(Rest,V,Y).
+
